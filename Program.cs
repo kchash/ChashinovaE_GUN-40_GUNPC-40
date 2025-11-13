@@ -1,9 +1,9 @@
 ﻿class Program
 {
-    static void Main()
+    static void Cunc()
     {
         Console.Write("Enter first number ");
-        if (!Int32.TryParse(Console.ReadLine(), out var a))
+         if (!Int32.TryParse(Console.ReadLine(), out var a))
         {
             Console.WriteLine("Not a number ");
             return;
