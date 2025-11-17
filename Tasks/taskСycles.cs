@@ -42,7 +42,7 @@ namespace Homework
                 input = Console.ReadLine();
             }
             while (input != password);
-            Console.WriteLine("Пароль верный!");
+            Console.WriteLine("Пароль верный");
         }
         
         
