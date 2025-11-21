@@ -82,9 +82,9 @@ public class Dungeon
     {
         _rooms = new Room[]
         {
-            new Room(new Unit("Goblin", 2, 5), new Weapon("Dagger", 1, 3)),
-            new Room(new Unit("Orc", 5, 10), new Weapon("Axe", 3, 7)),
-            new Room(new Unit("Troll", 8, 15), new Weapon("Club", 5, 10))
+            new Room(new Unit("Unit1", 0, 10), new Weapon("Weapon1", 0, 10)),
+            new Room(new Unit("Unit2", 0, 10), new Weapon("Weapon2", 0, 10)),
+            new Room(new Unit("Unit3", 0, 10), new Weapon("Weapon3", 0, 10))
         };
     }
 }
