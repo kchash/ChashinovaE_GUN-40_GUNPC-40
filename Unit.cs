@@ -6,27 +6,21 @@ public class Unit
 {
     private float _health;
     private float _armor;
-    private int _damage;
-    private Interval _attack;
+    private Interval _damage;
 
     public string Name { get; }
-    public int Damage => _damage;
     public float Armor => _armor;
     public float Health => _health;
-    public Interval Attack => _attack;
+    public Interval Damage => _damage;
 
-    public Unit() : this("Unknown Unit") { }
+    public Unit() : this("Unknown Unit", 0, 5) { }
 
-    public Unit(string name)
+    public Unit(string name, int minDamage, int maxDamage)
     {
         Name = name;
         _health = 100f;
         _armor = 0.6f;
-        _damage = 5;
-    }
-    public Unit(string name, int minDamage, int maxDamage) : this(name)
-    {
-        _attack = new Interval(minDamage, maxDamage);
+        _damage = new Interval(minDamage, maxDamage);
     }
 
     public float GetRealHealth()
@@ -40,17 +34,15 @@ public class Unit
         return _health <= 0f;
     }
 }
-
 public struct Interval
 {
-    private Random _random;
+    private static Random _random = new Random();
     private int _min;
     private int _max;
     public int Min => _min;
     public int Max => _max;
     public Interval(int min, int max)
     {
-        _random = new Random();
         _min = min;
         _max = max;
     }
@@ -85,13 +77,14 @@ public class Dungeon
 {
     private Room[] _rooms;
     public Room[] Rooms => _rooms;
+
     public Dungeon()
     {
         _rooms = new Room[]
         {
-            new Room(new Unit("Unit1", 0, 10), new Weapon("Weapon1", 0, 10)),
-            new Room(new Unit("Unit2", 0, 10), new Weapon("Weapon2", 0, 10)),
-            new Room(new Unit("Unit3", 0, 10), new Weapon("Weapon3", 0, 10))
+            new Room(new Unit("Goblin", 2, 5), new Weapon("Dagger", 1, 3)),
+            new Room(new Unit("Orc", 5, 10), new Weapon("Axe", 3, 7)),
+            new Room(new Unit("Troll", 8, 15), new Weapon("Club", 5, 10))
         };
     }
 }
