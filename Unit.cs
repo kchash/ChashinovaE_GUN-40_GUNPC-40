@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace MyProgram;
 
 using System;
@@ -37,18 +39,46 @@ public class Unit
 public struct Interval
 {
     private static Random _random = new Random();
-    private int _min;
-    private int _max;
-    public int Min => _min;
-    public int Max => _max;
-    public Interval(int min, int max)
+    private int minValue;
+    private int maxValue;
+
+    public int Min => minValue;
+    public int Max => maxValue;
+
+    public Interval(int minValue, int maxValue)
     {
-        _min = min;
-        _max = max;
+        bool incorrect = false;
+
+       
+        if (minValue < 0)
+        {
+            minValue = 0;
+        }
+
+        if (maxValue < 0)
+        {
+            maxValue = 0;
+        }
+        
+        if (minValue > maxValue)
+        {
+            minValue = maxValue;
+            maxValue = minValue;
+        }
+        
+        if (minValue == maxValue)
+        {
+            maxValue += 10;
+        }
+
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+
     }
+
     public int Get()
     {
-        return _random.Next(_min, _max + 1);
+        return _random.Next(minValue, maxValue + 1);
     }
 }
 public class Weapon
@@ -62,11 +92,12 @@ public class Weapon
         _name = name;
         _damage = new Interval(minDamage, maxDamage);
     }
+    
 }
 public struct Room
 {
-    public Unit Unit;
-    public Weapon Weapon;
+    private Unit Unit;
+    private Weapon Weapon;
     public Room(Unit unit, Weapon weapon)
     {
         Unit = unit;
