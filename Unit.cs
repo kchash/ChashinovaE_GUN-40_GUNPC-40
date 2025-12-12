@@ -1,121 +1,132 @@
-using System.Numerics;
+using System.Collections.Generic;
 
-namespace MyProgram;
-
-using System;
-
-public class Unit
+namespace HomeWork
 {
-    private float _health;
-    private float _armor;
-    private Interval _damage;
-
-    public string Name { get; }
-    public float Armor => _armor;
-    public float Health => _health;
-    public Interval Damage => _damage;
-
-    public Unit() : this("Unknown Unit", 0, 5) { }
-
-    public Unit(string name, int minDamage, int maxDamage)
+    internal class Program
     {
-        Name = name;
-        _health = 100f;
-        _armor = 0.6f;
-        _damage = new Interval(minDamage, maxDamage);
-    }
-
-    public float GetRealHealth()
-    {
-        return Health * (1f + Armor);
-    }
-
-    public bool SetDamage(float value)
-    {
-        _health -= value * Armor;
-        return _health <= 0f;
-    }
-}
-public struct Interval
-{
-    private static Random _random = new Random();
-    private int minValue;
-    private int maxValue;
-
-    public int Min => minValue;
-    public int Max => maxValue;
-
-    public Interval(int minValue, int maxValue)
-    {
-        bool incorrect = false;
-
-       
-        if (minValue < 0)
+        private class ListTask
         {
-            minValue = 0;
+            private List<string> list = new List<string> { "1", "2", "3" };
+
+            public void TaskLoop()
+            {
+                Console.WriteLine("Задание 1");
+
+                while (true)
+                {
+                    Console.Write("Добавьте строку в конец списка: ");
+                    string s = Console.ReadLine();
+                    if (s == "--exit") break;
+                    list.Add(s);
+
+                    Console.WriteLine("Список:");
+                    list.ForEach(Console.WriteLine);
+
+                    Console.Write("Добавьте строку в середину списка: ");
+                    s = Console.ReadLine();
+                    if (s == "--exit") break;
+                    list.Insert(list.Count / 2, s);
+
+                    Console.WriteLine("Список:");
+                    list.ForEach(Console.WriteLine);
+                }
+            }
         }
 
-        if (maxValue < 0)
+        private class DictionaryTask
         {
-            maxValue = 0;
+            private Dictionary<string, int> students = new Dictionary<string, int>();
+
+            public void TaskLoop()
+            {
+                Console.WriteLine("Задание 2");
+
+                while (true)
+                {
+                    Console.Write("Имя студента: ");
+                    string name = Console.ReadLine();
+                    if (name == "--exit") break;
+
+                    Console.Write("Оценка: ");
+                    string gradeStr = Console.ReadLine();
+                    if (gradeStr == "--exit") break;
+
+                    if (int.TryParse(gradeStr, out int grade) && grade >= 2 && grade <= 5)
+                        students[name] = grade;
+                    else
+                    {
+                        Console.WriteLine("Некорректный ввод");
+                        continue;
+                    }
+
+                    Console.Write("Введите имя студента: ");
+                    string search = Console.ReadLine();
+                    if (search == "--exit") break;
+
+                    Console.WriteLine(students.ContainsKey(search)
+                        ? $"Оценка: {students[search]}"
+                        : "Студента нет");
+                }
+            }
         }
-        
-        if (minValue > maxValue)
+
+        private class DoublyLinkedListTask
         {
-            minValue = maxValue;
-            maxValue = minValue;
+            private class Node
+            {
+                public string Data;
+                public Node Next;
+                public Node Prev;
+                public Node(string data) { Data = data; }
+            }
+
+            private Node head;
+            private Node tail;
+
+            public void TaskLoop()
+            {
+                Console.WriteLine("Задание 3");
+                int count = 0;
+
+                while (count < 6)
+                {
+                    string input = Console.ReadLine();
+                    if (input == "--exit") break;
+                    if (!string.IsNullOrEmpty(input))
+                    {
+                        AddNode(input);
+                        count++;
+                    }
+                }
+                
+                Console.WriteLine("Прямой порядок: ");
+                for (Node n = head; n != null; n = n.Next) Console.WriteLine(n.Data);
+
+                Console.WriteLine("Обратный порядок: ");
+                for (Node n = tail; n != null; n = n.Prev) Console.WriteLine(n.Data);
+            }
+
+            private void AddNode(string data)
+            {
+                Node n = new Node(data);
+                if (head == null) head = tail = n;
+                else { tail.Next = n; n.Prev = tail; tail = n; }
+            }
         }
-        
-        if (minValue == maxValue)
+
+        static void Main()
         {
-            maxValue += 10;
+            Console.Write("Введите номер задания");
+            string task = Console.ReadLine();
+
+            switch (task)
+            {
+                case "1": new ListTask().TaskLoop(); break;
+                case "2": new DictionaryTask().TaskLoop(); break;
+                case "3": new DoublyLinkedListTask().TaskLoop(); break;
+                default: Console.WriteLine("Такого заданя нет"); break;
+            }
+            
         }
-
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-
-    }
-
-    public int Get()
-    {
-        return _random.Next(minValue, maxValue + 1);
-    }
-}
-public class Weapon
-{
-    private Interval _damage;
-    private string _name;
-    public string Name => _name;
-    public Interval Damage => _damage;
-    public Weapon(string name, int minDamage, int maxDamage)
-    {
-        _name = name;
-        _damage = new Interval(minDamage, maxDamage);
-    }
-    
-}
-public struct Room
-{
-    private Unit Unit;
-    private Weapon Weapon;
-    public Room(Unit unit, Weapon weapon)
-    {
-        Unit = unit;
-        Weapon = weapon;
-    }
-}
-public class Dungeon
-{
-    private Room[] _rooms;
-    public Room[] Rooms => _rooms;
-
-    public Dungeon()
-    {
-        _rooms = new Room[]
-        {
-            new Room(new Unit("Unit1", 0, 10), new Weapon("Weapon1", 0, 10)),
-            new Room(new Unit("Unit2", 0, 10), new Weapon("Weapon2", 0, 10)),
-            new Room(new Unit("Unit3", 0, 10), new Weapon("Weapon3", 0, 10))
-        };
     }
 }
